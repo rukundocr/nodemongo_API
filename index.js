@@ -7,6 +7,7 @@ const morgan = require('morgan');
 const bodyparser = require("body-parser");
 const port = process.env.PORT || 3000;
 const Intama = require ('./model/thing.js');
+const SensorData = require ('./model/sensor.js');
 app.use(bodyparser.json());
 app.use(morgan('dev'));
 app.use(cors())
@@ -102,6 +103,51 @@ app.listen(port,()=>console.log(`server listening on port ${port}`));
    );
  });
 
+ // post sensor data
+ app.post('/post',(req,res,next)=>{
+      
+  const sensordata = new SensorData({
+   moisture : req.body.moisture,
+   temp : req.body.temp,
+   humidity: req.body.humidity,
+   pump_status: req.body.pump_status,
+   updated:Date.now()
+   
+  });
+  sensordata.save().then(
+    () => {
+      res.status(201).json({
+        message: 'Sensor Data saved successfully!'
+      });
+    }
+  ).catch(
+    (error) => {
+      res.status(400).json({
+        error: error
+      });
+    }
+  );
+});
+//get last sensor data feed
+app.get('/getlatest',(req,res)=>{
+  SensorData.find().sort({moisture:1}).limit(1)
+  .then((data)=>{
+    res.json(data).status(200);
+  }).catch((error)=>{
+    res.json({message:error});
+  });
+})
+
+//get all sensor data feeds
+app.get('/getall',(req,res)=>{
+  SensorData.find()
+  .then((data)=>{
+    res.json(data).status(200);
+  }).catch((error)=>{
+    res.json({message:error});
+  });
+})
+//update data with specific id 
    app.put('/edit/:id', (req,res,next)=>{
      
      const intama = new Intama({
