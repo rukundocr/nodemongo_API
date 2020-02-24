@@ -5,7 +5,7 @@ const thingschmema = mongoose.Schema({
     temp: { type:String, required: true },
     //userId: { type: String, required: true },
     humidity: { type: String, required: true },
-    motor_status:{type:Number,required:true},
+    pump_status:{type:Number,required:true},
    // created_at:{type:new Date(), required:true}
     updated: { type: Date, default: Date.now(), required:false},
 });

@@ -130,7 +130,7 @@ app.listen(port,()=>console.log(`server listening on port ${port}`));
 });
 //get last sensor data feed
 app.get('/getlatest',(req,res)=>{
-  SensorData.find().sort({moisture:1}).limit(1)
+  SensorData.find().sort({updated:-1}).limit(1)
   .then((data)=>{
     res.json(data).status(200);
   }).catch((error)=>{
@@ -140,7 +140,7 @@ app.get('/getlatest',(req,res)=>{
 
 //get all sensor data feeds
 app.get('/getall',(req,res)=>{
-  SensorData.find()
+  SensorData.find().sort({updated:-1})
   .then((data)=>{
     res.json(data).status(200);
   }).catch((error)=>{
