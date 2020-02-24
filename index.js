@@ -147,6 +147,41 @@ app.get('/getall',(req,res)=>{
     res.json({message:error});
   });
 })
+//delete sensor data 
+app.delete('/data/:id',(req,res,next)=>{
+  SensorData.deleteOne({_id: req.params.id}).then(
+       () => {
+         res.status(200).json({
+           message: 'Deleted!'
+         });
+       }
+     ).catch(
+       (error) => {
+         res.status(400).json({
+           error: error
+         });
+       }
+     );
+});
+//delete sensor data records 
+app.delete('/data',(req,res,next)=>{
+  SensorData.remove().then(
+       () => {
+         res.status(200).json({
+           message: 'Deleted!'
+         });
+       }
+     ).catch(
+       (error) => {
+         res.status(400).json({
+           error: error
+         });
+       }
+     );
+
+});
+
+
 //update data with specific id 
    app.put('/edit/:id', (req,res,next)=>{
      
